@@ -115,5 +115,5 @@ Feel free to fork the repository and submit a pull request.
 
 ## 📬 Contact
 
-Created by [@iamnkr67](https://github.com/iamnkr67), [@sri0777](https://github.com/sri0777)
+Created by [@sshivanisingh](https://github.com/sshivanisingh)
 
