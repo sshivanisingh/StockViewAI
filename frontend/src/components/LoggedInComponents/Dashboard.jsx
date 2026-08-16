@@ -12,7 +12,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Load stock list
         const res = await fetch("/stock.json");
+
+        if (!res.ok) {
+          throw new Error(`Failed to load stock.json: ${res.status}`);
+        }
+
         const data = await res.json();
 
         const filtered = data.filter((stock) =>
@@ -23,27 +29,56 @@ const Dashboard = () => {
 
         setStocks(filtered);
 
-        const pricePromises = filtered.map((stock) =>
-          fetch(`${API_BASE}/stock/${stock["Security Id"]}`)
-            .then((res) => res.json())
-            .then((priceData) => ({
-              id: stock["Security Id"],
-              price: priceData.priceInfo.lastPrice,
-            }))
-            .catch((err) => {
-              console.error(
-                "Error fetching price for",
-                stock["Security Id"],
-                err,
-              );
-              return null;
-            }),
-        );
+        // Fetch prices
+        const pricePromises = filtered.map(async (stock) => {
+          const stockId = stock["Security Id"];
+
+          try {
+            const response = await fetch(`${API_BASE}/stock/${stockId}`);
+
+            // Handle 4xx / 5xx responses
+            if (!response.ok) {
+              let errorMessage = `HTTP ${response.status}`;
+
+              try {
+                const errorData = await response.json();
+                errorMessage = errorData?.message || errorMessage;
+              } catch {
+                // Response wasn't JSON
+              }
+
+              throw new Error(errorMessage);
+            }
+
+            const priceData = await response.json();
+
+            // Safely get lastPrice
+            const lastPrice = priceData?.priceInfo?.lastPrice;
+
+            if (lastPrice === undefined || lastPrice === null) {
+              throw new Error("Stock price not available");
+            }
+
+            return {
+              id: stockId,
+              price: Number(lastPrice),
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching price for ${stockId}:`,
+              error.message,
+            );
+
+            return null;
+          }
+        });
 
         const results = await Promise.all(pricePromises);
+
         const newPrices = {};
+
         results.forEach((item) => {
-          if (item) {
+          if (item && item.price !== undefined) {
             newPrices[item.id] = item.price;
           }
         });
@@ -61,61 +96,46 @@ const Dashboard = () => {
     navigate(`/stock/${stockId}`);
   };
 
-  const getPriceChangeClass = (currentPrice, previousPrice) => {
-    if (currentPrice > previousPrice) {
-      return {
-        className: "text-green-600",
-        change: `+${(currentPrice - previousPrice).toFixed(2)}`,
-      };
-    } else if (currentPrice < previousPrice) {
-      return {
-        className: "text-red-600",
-        change: `-${(previousPrice - currentPrice).toFixed(2)}`,
-      };
-    }
-    return { className: "text-gray-600", change: "" };
-  };
-
   return (
     <div className="p-4 sm:p-6 bg-gray-100 min-h-screen">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {stocks.map((stock) => {
-          const currentPrice = prices[stock["Security Id"]];
-          const { className, change } = getPriceChangeClass(
-            currentPrice,
-            currentPrice, // Compare to itself since no previous price logic here
-          );
+          const stockId = stock["Security Id"];
+          const currentPrice = prices[stockId];
 
           return (
             <div
-              key={stock["Security Id"]}
-              onClick={() => handleClick(stock["Security Id"])}
+              key={stockId}
+              onClick={() => handleClick(stockId)}
               className="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition-transform transform hover:scale-105"
             >
               <h2 className="text-lg font-semibold text-secondary mb-1">
                 {stock["Issuer Name"]}
               </h2>
+
               <p className="text-xs text-gray-600">
                 {stock["Industry New Name"]}
               </p>
+
               <p className="mt-3 text-lg font-bold">
                 {currentPrice !== undefined ? (
-                  <span className="text-gray-800">₹ {currentPrice}</span>
+                  <span className="text-gray-800">
+                    ₹ {currentPrice.toFixed(2)}
+                  </span>
                 ) : (
                   <span className="flex items-center gap-1 text-gray-400 h-5">
                     {[...Array(3)].map((_, i) => (
                       <span
                         key={i}
                         className="text-xl animate-bounce"
-                        style={{ animationDelay: `${i * 0.2}s` }}
+                        style={{
+                          animationDelay: `${i * 0.2}s`,
+                        }}
                       >
                         .
                       </span>
                     ))}
                   </span>
-                )}
-                {currentPrice !== undefined && (
-                  <span className={`ml-2 text-sm ${className}`}>{change}</span>
                 )}
               </p>
             </div>
