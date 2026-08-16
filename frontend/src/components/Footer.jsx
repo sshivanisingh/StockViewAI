@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CalculatorModal from "./ModalComp/CalculatorModal"; // Adjust path if needed
+import Glossary from "./ModalComp/GlossaryModal";
+import WebStories from "./ModalComp/WebStories";
 
 const Footer = () => {
   const [isCalcOpen, setIsCalcOpen] = useState(false);
+  const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
+  const [isWebStoriesOpen, setIsWebStoriesOpen] = useState(false);
 
   return (
     <footer className="py-28 bg-[#f7f7f7] ">
@@ -15,8 +19,21 @@ const Footer = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14 md:gap-4">
           <div className="space-y-4 max-w-[300px]">
-            <h1 className="text-2xl font-bold">StockView</h1>
-            <p className="text-dark2">StockView is stock website</p>
+            <div>
+              <a href="/">
+                <h1 className="font-bold text-2xl">
+                  Stock
+                  <span className="text-secondary font-extrabold">ViewAI</span>
+                </h1>
+              </a>
+            </div>
+
+            <p className="text-dark2 text-justify leading-relaxed">
+              StockView is a beginner-friendly stock market learning platform
+              that provides real-time stock data, interactive charts, AI-powered
+              stock analysis, price alerts, and financial calculators in a
+              simple and user-friendly interface.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-10">
@@ -50,10 +67,16 @@ const Footer = () => {
                   >
                     Calculators
                   </li>
-                  <li className="cursor-pointer hover:text-secondary duration-200">
+                  <li
+                    onClick={() => setIsGlossaryOpen(true)}
+                    className="cursor-pointer hover:text-secondary duration-200"
+                  >
                     Glossary
                   </li>
-                  <li className="cursor-pointer hover:text-secondary duration-200">
+                  <li
+                    onClick={() => setIsWebStoriesOpen(true)}
+                    className="cursor-pointer hover:text-secondary duration-200"
+                  >
                     Web Stories
                   </li>
                 </ul>
@@ -75,10 +98,10 @@ const Footer = () => {
             </div>
 
             <div className="flex space-x-6 py-3">
-              <a href="https://chat.whatsapp.com/randommmm">
+              <a href="https://chat.whatsapp.com/+919876543210">
                 <FaWhatsapp className="cursor-pointer hover:text-primary hover:scale-105 duration-200" />
               </a>
-              <a href="mailto:stockviewai@gmail.com">
+              <a href="mailto:sshivanishashisinngh@gmail.com">
                 <FaEnvelope className="cursor-pointer hover:text-primary hover:scale-105 duration-200" />
               </a>
             </div>
@@ -88,12 +111,12 @@ const Footer = () => {
               <p className="text-sm text-black mt-2">
                 Made with <span className="text-red-500">❤</span> by{" "}
                 <a
-                  className="text-blue-400"
-                  href="https://stockviewai.vercel.app/"
+                  className="text-[#4F9184] hover:text-secondary  duration-20 "
+                  href="https://www.linkedin.com/in/sshivaniisingh/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  ShinuuVerse
+                  Shinuu Technologies
                 </a>
               </p>
             </div>
@@ -104,6 +127,14 @@ const Footer = () => {
       <CalculatorModal
         isOpen={isCalcOpen}
         onClose={() => setIsCalcOpen(false)}
+      />
+      <Glossary
+        isOpen={isGlossaryOpen}
+        onClose={() => setIsGlossaryOpen(false)}
+      />
+      <WebStories
+        isOpen={isWebStoriesOpen}
+        onClose={() => setIsWebStoriesOpen(false)}
       />
     </footer>
   );

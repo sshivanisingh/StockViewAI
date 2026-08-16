@@ -16,4 +16,5 @@ router.get("/graph/:symbol", getHistory);
 router.post("/ai/predict", aiPredict);
 router.post("/ask/ai", askAI);
 
+
 module.exports = router;

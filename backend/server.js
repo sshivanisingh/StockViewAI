@@ -5,7 +5,7 @@ const db = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const stockRoutes = require("./routes/stockRoutes");
 const wishlistRoutes = require("./routes/wishList");
-
+const newsRoutes = require("./routes/newsRoutes");
 
 // const { schedulePriceCheck } = require("./controllers/priceChecker");
 // // Start the stock price checker
@@ -20,8 +20,7 @@ const port = process.env.PORT || 5000;
 app.use("/api/user", userRoutes);
 app.use("/stock", stockRoutes);
 app.use("/stock/wishlist", wishlistRoutes);
-
-
+app.use("/news", newsRoutes);
 app.listen(port, () => {
   console.log(`Server running on port ${port} 🚀`);
 });

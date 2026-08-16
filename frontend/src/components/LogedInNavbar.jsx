@@ -94,9 +94,7 @@ const LNavbar = ({ user }) => {
     if (!storedUser?.email) return;
 
     try {
-      const res = await fetch(
-        `${API_BASE}/stock/wishlist/${storedUser.email}`,
-      );
+      const res = await fetch(`${API_BASE}/stock/wishlist/${storedUser.email}`);
       const data = await res.json();
       setWishlist(data);
     } catch (err) {
@@ -139,7 +137,7 @@ const LNavbar = ({ user }) => {
         >
           <a href="/">
             <h1 className="font-bold text-2xl">
-              Stock<span className="text-secondary font-extrabold">View</span>
+              Stock<span className="text-secondary font-extrabold">ViewAI</span>
             </h1>
           </a>
 

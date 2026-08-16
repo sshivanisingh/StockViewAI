@@ -679,7 +679,7 @@ const AIPrediction = ({ stock }) => {
 
           <button
             onClick={fetchAI}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition"
+            className="bg-secondary hover:bg-[#4F9184]  duration-200 text-white px-5 py-2.5 rounded-lg font-medium transition"
           >
             Generate AI Prediction
           </button>
@@ -768,8 +768,6 @@ const AIPrediction = ({ stock }) => {
 
             <p className="text-gray-700">{aiData.summary}</p>
           </div>
-
-          {/* ASK AI */}
 
           {/* ASK AI */}
 

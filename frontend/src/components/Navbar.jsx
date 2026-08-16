@@ -18,7 +18,7 @@ const Navbar = () => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false); 
+      setIsOpen(false);
     }
   };
 
@@ -38,9 +38,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav
-        className="sticky top-0 z-50 shadow-sm w-full backdrop-blur-md "
-      >
+      <nav className="sticky top-0 z-50 shadow-sm w-full backdrop-blur-md ">
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -48,10 +46,11 @@ const Navbar = () => {
         >
           <div>
             <a href="/">
-            <h1 className="font-bold text-2xl">
-              Stock<span className="text-secondary font-extrabold">View</span>
+              <h1 className="font-bold text-2xl">
+                Stock
+                <span className="text-secondary font-extrabold">ViewAI</span>
               </h1>
-              </a>
+            </a>
           </div>
 
           {/* Desktop Menu */}
