@@ -7,9 +7,9 @@ const stockRoutes = require("./routes/stockRoutes");
 const wishlistRoutes = require("./routes/wishList");
 
 
-const { schedulePriceCheck } = require("./controllers/priceChecker");
-// Start the stock price checker
-schedulePriceCheck();
+// const { schedulePriceCheck } = require("./controllers/priceChecker");
+// // Start the stock price checker
+// schedulePriceCheck();
 
 const app = express();
 app.use(express.json());
