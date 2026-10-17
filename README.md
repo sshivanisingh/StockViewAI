@@ -54,7 +54,7 @@ StockView/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/iamnkr67/StockView.git
+git clone https://github.com/sshivanisingh/StockViewAI.git
 cd StockView
 ```
 
